@@ -22,12 +22,12 @@ void dfs(const Graph& graph, int v, bool visited[]) {
 
 /* 一次搜索不一定覆盖全图：用外层循环补上尚未访问的部分。 */
 void dfsAll(const Graph& graph) {
-    /* TODO 4：创建 bool visited[MAXV] = {}，只初始化这一次。
-     * 按编号递增检查所有顶点，对未访问的顶点调用 dfs。
-     *
-     * 参数：
-     *   graph  只读的图。visited 由本函数自己创建，不需要调用者传入。
-     */
+    bool visited[MAXV]={false};
+    for (int v=0;v<graph.numVertices;v++) {
+        if (!visited[v]) {
+            dfs(graph, v, visited);
+        }
+    }
 }
 
 /* 广度优先：沿用 Lab11 的层次遍历，先入队，再循环出队、访问、扩展。
