@@ -605,61 +605,61 @@ graph tests: 18/18 passed
 
 ### 7.1 运行记录
 
-演示图（6 顶点 A～F，无向边 A—B、A—C、B—C、B—D、C—E，F 孤立）实际运行结果：
-
-```text
-邻接矩阵：
-  A B C D E F
-A 0 1 1 0 0 0
-B 1 0 1 1 0 0
-C 1 1 0 0 1 0
-D 0 1 0 0 0 0
-E 0 0 1 0 0 0
-F 0 0 0 0 0 0
-顶点数：6，边数：5
-从 A 出发的 DFS：A B C E D
-从 A 出发的 BFS：A B C D E
-全图 DFS：A B C E D F
-全图 BFS：A B C D E F
-```
-
-18 组测试全部通过：
-
-```text
-empty graph: PASS
-single vertex: PASS
-insert undirected: PASS
-reject duplicate: PASS
-reject invalid insert: PASS
-remove undirected: PASS
-reject invalid remove: PASS
-directed edge operations: PASS
-DFS cycle and isolated: PASS
-BFS cycle and isolated: PASS
-single search reachability: PASS
-respect existing visited: PASS
-Lab11 tree as graph: PASS
-multiple components: PASS
-follow directed edges: PASS
-dense graph: PASS
-mutate and repeat: PASS
-capacity boundary: PASS
-graph tests: 18/18 passed
-```
+> 演示图（6 顶点 A～F，无向边 A—B、A—C、B—C、B—D、C—E，F 孤立）实际运行结果：
+>
+> ```text
+> 邻接矩阵：
+>   A B C D E F
+> A 0 1 1 0 0 0
+> B 1 0 1 1 0 0
+> C 1 1 0 0 1 0
+> D 0 1 0 0 0 0
+> E 0 0 1 0 0 0
+> F 0 0 0 0 0 0
+> 顶点数：6，边数：5
+> 从 A 出发的 DFS：A B C E D
+> 从 A 出发的 BFS：A B C D E
+> 全图 DFS：A B C E D F
+> 全图 BFS：A B C D E F
+> ```
+>
+> 18 组测试全部通过：
+>
+> ```text
+> empty graph: PASS
+> single vertex: PASS
+> insert undirected: PASS
+> reject duplicate: PASS
+> reject invalid insert: PASS
+> remove undirected: PASS
+> reject invalid remove: PASS
+> directed edge operations: PASS
+> DFS cycle and isolated: PASS
+> BFS cycle and isolated: PASS
+> single search reachability: PASS
+> respect existing visited: PASS
+> Lab11 tree as graph: PASS
+> multiple components: PASS
+> follow directed edges: PASS
+> dense graph: PASS
+> mutate and repeat: PASS
+> capacity boundary: PASS
+> graph tests: 18/18 passed
+> ```
 
 ### 7.2 简答
 
 1. 结合 4.5、5.4 节的追踪，说明 DFS 与 BFS 输出顺序不同的原因。
 
-   DFS 采用栈式递归（深度优先）：访问当前顶点后立即深入它的第一个未访问邻接点，沿一条路径走到底再回溯，因此输出序列呈现"先把一条支路走完整"的特征，例如 A→B→C→E 后才回溯到 D。BFS 采用队列（广度优先）：先访问起点，再按层依次访问起点的所有邻接点、邻接点的邻接点，输出序列按距离分层展开，例如 A 之后先输出所有距离为 1 的 B、C，再输出距离为 2 的 D、E。两者的核心差异在于"先深入"与"先展开"。
+   > DFS 采用栈式递归（深度优先）：访问当前顶点后立即深入它的第一个未访问邻接点，沿一条路径走到底再回溯，因此输出序列呈现"先把一条支路走完整"的特征，例如 A→B→C→E 后才回溯到 D。BFS 采用队列（广度优先）：先访问起点，再按层依次访问起点的所有邻接点、邻接点的邻接点，输出序列按距离分层展开，例如 A 之后先输出所有距离为 1 的 B、C，再输出距离为 2 的 D、E。两者的核心差异在于"先深入"与"先展开"。
 
 2. BFS 中顶点尚未输出时 `visited` 已为 `true`。说明该标记的含义，以及改为出队时标记的后果。
 
-   入队时标记 `visited=true` 表示该顶点已被"发现"（已加入待访问队列），不再重复入队，但尚未输出。如果改为出队时才标记，一个顶点可能同时被多个前驱邻接点发现并多次入队，导致同一顶点在队列中出现多次、输出重复，甚至队列膨胀、遍历结果错误。
+   > 入队时标记 `visited=true` 表示该顶点已被"发现"（已加入待访问队列），不再重复入队，但尚未输出。如果改为出队时才标记，一个顶点可能同时被多个前驱邻接点发现并多次入队，导致同一顶点在队列中出现多次、输出重复，甚至队列膨胀、遍历结果错误。
 
 3. 说明矩阵存储下 `dfsAll`、`bfsAll` 为 O(n²) 而非 O(n+e) 的原因。
 
-   邻接矩阵中，每个顶点的邻接关系存放在一整行 `n` 个元素中，无论实际边数多少，扫描一个顶点的邻接点都必须检查整行 `n` 个位置。`dfsAll`/`bfsAll` 需要对每个顶点各扫描一行，共 `n×n` 个位置，因此是 O(n²)。O(n+e) 是邻接表存储的复杂度（每条边只被处理一次），矩阵存储不存在"只遍历边"的机制。
+   > 邻接矩阵中，每个顶点的邻接关系存放在一整行 `n` 个元素中，无论实际边数多少，扫描一个顶点的邻接点都必须检查整行 `n` 个位置。`dfsAll`/`bfsAll` 需要对每个顶点各扫描一行，共 `n×n` 个位置，因此是 O(n²)。O(n+e) 是邻接表存储的复杂度（每条边只被处理一次），矩阵存储不存在"只遍历边"的机制。
 
 ---
 
